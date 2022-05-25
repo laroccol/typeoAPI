@@ -1,6 +1,12 @@
 import express from "express";
+import { CharacterData } from "../constants/race";
+import { ResultsData } from "../constants/race";
 import { Passages, CommonWords } from "../constants/passages";
 import { TextTypes, GameTypes } from "../constants/settings";
+import { db } from "../config/firestore";
+import { doc } from "prettier";
+import { saveRaceStats } from "../db/race";
+import { verifyIDToken } from "../auth/authenticateToken";
 const router = express.Router();
 
 /* GET users listing. */
@@ -36,6 +42,47 @@ router.get("/passage", (req, res) => {
   res.send({ passage: newPassage });
 });
 
-const queue = [];
+router.post("/statreport", verifyIDToken, async (req: any, res, next) => {
+  const { uid } = req["current-user"];
+
+  const resultsData: ResultsData = req.body.resultsData;
+  const characterData: Array<CharacterData> = req.body.characterData;
+  const wpm = resultsData.dataPoints[resultsData.dataPoints.length - 1].wpm;
+  const accuracy = resultsData.accuracy;
+  const testType = resultsData.testType;
+
+  const passage = resultsData.passage;
+
+  const characterMap = new Map<string, number>();
+  let mostMissedCharacter = "None";
+  let maxCount = 0;
+  let compoundError = false;
+  for (const element of characterData) {
+    if (!element.isCorrect && !compoundError) {
+      const character = passage[element.charIndex - 1];
+      const newCharacterCount = (characterMap.get(character) || 0) + 1;
+      characterMap.set(character, newCharacterCount);
+
+      if (newCharacterCount > maxCount) {
+        mostMissedCharacter = character;
+        maxCount = newCharacterCount;
+      }
+    } else if (element.isCorrect && compoundError) {
+      compoundError = false;
+    }
+  }
+
+  try {
+    await saveRaceStats(uid, { wpm, accuracy, mostMissedCharacter, testType });
+  } catch (err) {
+    const error: R_ERROR = {
+      status: 500,
+      text: "Database Error",
+    };
+    next(error);
+  }
+
+  res.status(200).send("Stats Successfully Saved");
+});
 
 export default router;

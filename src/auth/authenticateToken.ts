@@ -4,13 +4,6 @@ import { Socket } from "socket.io";
 import { DefaultEventsMap } from "socket.io/dist/typed-events";
 //import serviceAccount from "./firebaseadminsdk.json";
 
-admin.initializeApp({
-  credential: admin.credential.cert(
-    "E:\\type-react\\api\\src\\auth\\firebaseadminsdk.json"
-  ),
-  //databaseURL: "https://phone-book-fe436.firebaseio.com",
-});
-
 export const verifyIDToken = async (req: any, res: any, next: any) => {
   const header = req.headers?.authorization;
   try {
