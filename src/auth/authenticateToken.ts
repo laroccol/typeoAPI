@@ -30,7 +30,7 @@ export const decodeSocketIDToken = async (socket: any, next: any) => {
     const decodedToken = await admin.auth().verifyIdToken(idToken);
     socket.data.user_id = decodedToken.uid;
   } catch (err) {
-    socket.data.user_id = socket.id;
+    socket.data.user_id = idToken;
   }
 
   next();

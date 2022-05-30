@@ -9,4 +9,10 @@ export interface RaceStats {
   mostMissedCharacter: string;
 }
 
-export const TimeframeConversion = [1000, 100, 10];
+export enum Timeframes {
+  ALL_TIME = 1000,
+  LAST_100 = 100,
+  LAST_50 = 50,
+  LAST_25 = 25,
+  LAST_10 = 10,
+}

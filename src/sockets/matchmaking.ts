@@ -43,17 +43,21 @@ export const Matches = new Map<string, Match>();
 
 const matchmakingSocketHandler = (io: Server, socket: Socket) => {
   socket.on(JOIN_QUEUE_EVENT, async () => {
-    if (socket.rooms.size > 1) return;
+    if (socket.rooms.size > 1) {
+      for (const room of socket.rooms) {
+        if (room !== socket.id) socket.leave(room);
+      }
+    }
 
     // If there is already a match waiting for a player, join it
     if (AwaitingMatches.size > 0) {
       const [matchID, matchData]: [string, Match] =
         AwaitingMatches.entries().next().value;
-      matchData.players.push(socket.id);
+      matchData.players.push(socket.data.user_id);
       await socket.join(matchID);
       io.in(matchID).emit(
         PLAYER_JOINED_EVENT,
-        socket.id,
+        socket.data.user_id,
         matchData.players,
         matchData.passage
       );
@@ -78,7 +82,7 @@ const matchmakingSocketHandler = (io: Server, socket: Socket) => {
       }
     } else {
       const newMatch: Match = {
-        players: [socket.id],
+        players: [socket.data.user_id],
         matchState: MatchState.WAITING,
         passage: Passages[Math.floor(Math.random() * Passages.length)],
         timer: null,
@@ -90,7 +94,7 @@ const matchmakingSocketHandler = (io: Server, socket: Socket) => {
       await socket.join(newMatchID);
       io.in(newMatchID).emit(
         PLAYER_JOINED_EVENT,
-        socket.id,
+        socket.data.user_id,
         newMatch.players,
         newMatch.passage
       );
@@ -126,9 +130,9 @@ const OnPlayerLeave = (io: Server, socket: Socket) => {
 
   const match = AwaitingMatches.get(matchID) || Matches.get(matchID);
   if (match) {
-    match.players.splice(match.players.indexOf(socket.id), 1);
+    match.players.splice(match.players.indexOf(socket.data.user_id), 1);
 
-    io.to(matchID).emit(PLAYER_LEFT_EVENT, socket.id, match.players);
+    io.to(matchID).emit(PLAYER_LEFT_EVENT, socket.data.user_id, match.players);
 
     if (match.players.length < 1) {
       AwaitingMatches.delete(matchID);

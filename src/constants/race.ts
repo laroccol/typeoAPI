@@ -2,6 +2,7 @@ export interface CharacterData {
   charIndex: number;
   isCorrect: boolean;
   timestamp: number;
+  multiCharacterDelete?: number;
 }
 
 export interface WPMData {

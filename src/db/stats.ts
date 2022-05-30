@@ -5,7 +5,7 @@ import { RaceSchema } from "../constants/schemas/race";
 export const getUserRaces = async (
   uid: string,
   amount: number
-): Promise<Array<RaceStats>> => {
+): Promise<Array<RaceSchema>> => {
   const userRacesCollection = db.collection(`/users/${uid}/races`);
   const racesSnapshot = await userRacesCollection
     .orderBy("timestamp", "desc")
