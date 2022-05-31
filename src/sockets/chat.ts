@@ -1,5 +1,5 @@
 import { Server, Socket } from "socket.io";
-import { userIDMappings } from "../../src/config/io";
+import { userIDMappings } from "../config/io";
 
 const PREFIX = "chat:";
 

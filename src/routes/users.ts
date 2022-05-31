@@ -1,5 +1,5 @@
 import express from "express";
-import { verifyUID, deleteUser } from "../../src/auth/utils";
+import { verifyUID, deleteUser } from "../auth/utils";
 import { createUser } from "../db/users";
 const router = express.Router();
 

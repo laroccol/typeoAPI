@@ -2,7 +2,7 @@ import { Server, Socket } from "socket.io";
 import { io } from "socket.io-client";
 import { DefaultEventsMap } from "socket.io/dist/typed-events";
 import { v4 as uuidv4 } from "uuid";
-import { Passages } from "../../src/constants/passages";
+import { Passages } from "../constants/passages";
 
 const PREFIX = "matchmaking:";
 
