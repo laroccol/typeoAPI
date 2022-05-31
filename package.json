@@ -4,11 +4,10 @@
   "private": true,
   "main": "dist/index.js",
   "scripts": {
-    "tsc": "./node_modules/typescript/bin/tsc",
-    "build": "tsc",
-    "start": "npm run build & node .",
-    "dev": "ts-node-dev src/index.ts",
-    "test": "jest"
+    "tsc": "tsc",
+    "start": "node dist/index.js",
+    "postinstall": "npm run tsc",
+    "dev": "ts-node-dev src/index.ts"
   },
   "dependencies": {
     "body-parser": "^1.18.3",
