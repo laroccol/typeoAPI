@@ -26,6 +26,10 @@ app.use((err: any, req: any, res: any, next: any) => {
   res.status(err.status || 500).send(err.text || "Something went wrong");
 });
 
+console.log(
+  path.join(__dirname.substring(0, __dirname.lastIndexOf("\\")), "/build")
+);
+
 app.use(
   express.static(
     path.join(__dirname.substring(0, __dirname.lastIndexOf("\\")), "/build")
