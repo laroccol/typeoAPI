@@ -28,6 +28,7 @@ app.use((err: any, req: any, res: any, next: any) => {
 
 let buildDir = path.join(__dirname, "..", "..", "client", "/build");
 if (process.env.NODE_ENV === "production") {
+  console.log("ERE");
   buildDir = path.join(__dirname, "..", "build");
 }
 

@@ -94,6 +94,8 @@ const matchmakingSocketHandler = (io: Server, socket: Socket) => {
         createdTime: 0,
         startTime: 0,
       };
+
+      console.log(socket.data.displayName);
       const newMatchID: string = uuidv4();
       AwaitingMatches.set(newMatchID, newMatch);
       await socket.join(newMatchID);
