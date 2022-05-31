@@ -46,7 +46,6 @@ export const createSocketIOServer = (server: any): Server => {
     matchmakingSocketHandler(io, socket);
     raceSocketHandler(io, socket);
     chatSocketHandler(io, socket);
-    console.log("New connection");
 
     socket.on("disconnecting", (reason) => {
       matchmakingDisconnectingHandler(io, socket);
@@ -54,7 +53,6 @@ export const createSocketIOServer = (server: any): Server => {
 
     socket.on("disconnect", (reason) => {
       userIDMappings.delete(socket.data.user_id);
-      //console.log(reason);
     });
   });
 
