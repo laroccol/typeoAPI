@@ -27,12 +27,12 @@ app.use((err: any, req: any, res: any, next: any) => {
 });
 
 console.log(__dirname);
-console.log(__dirname.lastIndexOf("\\"));
-console.log(__dirname.substring(0, __dirname.lastIndexOf("\\")));
+console.log(__dirname.lastIndexOf("/"));
+console.log(__dirname.substring(0, __dirname.lastIndexOf("/")));
 console.log(path.join(__dirname, "/build"));
 
 app.use(
   express.static(
-    path.join(__dirname.substring(0, __dirname.lastIndexOf("\\")), "/build")
+    path.join(__dirname.substring(0, __dirname.lastIndexOf("/")), "/build")
   )
 );
