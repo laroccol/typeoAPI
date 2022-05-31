@@ -5,6 +5,7 @@ import userRouter from "../routes/users";
 import cors from "cors";
 import cookieParser from "cookie-parser";
 import { verifyIDToken } from "../auth/authenticateToken";
+import path from "path";
 
 export const app = express();
 
@@ -25,4 +26,4 @@ app.use((err: any, req: any, res: any, next: any) => {
   res.status(err.status || 500).send(err.text || "Something went wrong");
 });
 
-app.use(express.static("E:/type-react/api/src/config/build"));
+app.use(express.static(path.join(__dirname + "/build"))));
