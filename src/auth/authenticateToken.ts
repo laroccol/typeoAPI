@@ -28,9 +28,12 @@ export const decodeSocketIDToken = async (socket: any, next: any) => {
   const idToken = socket.handshake.auth.token;
   try {
     const decodedToken = await admin.auth().verifyIdToken(idToken);
-    socket.data.user_id = decodedToken.uid;
+    const user = await admin.auth().getUser(decodedToken.uid);
+    socket.data.user_id = user.uid;
+    socket.data.displayName = user.displayName;
   } catch (err) {
     socket.data.user_id = idToken;
+    socket.data.displayName = `Guest_${idToken}`;
   }
 
   next();

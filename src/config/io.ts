@@ -21,6 +21,7 @@ interface InterServerEvents {
 
 interface SocketData {
   user_id: string;
+  displayName: string;
 }
 
 export const userIDMappings = new Map();

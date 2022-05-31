@@ -25,7 +25,7 @@ export enum MatchState {
 }
 
 export interface Match {
-  players: Array<string>;
+  players: Array<{ uid: string; displayName: string }>;
   matchState: MatchState;
   passage: string;
   timer: NodeJS.Timer;
@@ -53,7 +53,10 @@ const matchmakingSocketHandler = (io: Server, socket: Socket) => {
     if (AwaitingMatches.size > 0) {
       const [matchID, matchData]: [string, Match] =
         AwaitingMatches.entries().next().value;
-      matchData.players.push(socket.data.user_id);
+      matchData.players.push({
+        uid: socket.data.user_id,
+        displayName: socket.data.displayName,
+      });
       await socket.join(matchID);
       io.in(matchID).emit(
         PLAYER_JOINED_EVENT,
@@ -82,7 +85,9 @@ const matchmakingSocketHandler = (io: Server, socket: Socket) => {
       }
     } else {
       const newMatch: Match = {
-        players: [socket.data.user_id],
+        players: [
+          { uid: socket.data.user_id, displayName: socket.data.displayName },
+        ],
         matchState: MatchState.WAITING,
         passage: Passages[Math.floor(Math.random() * Passages.length)],
         timer: null,
@@ -130,7 +135,12 @@ const OnPlayerLeave = (io: Server, socket: Socket) => {
 
   const match = AwaitingMatches.get(matchID) || Matches.get(matchID);
   if (match) {
-    match.players.splice(match.players.indexOf(socket.data.user_id), 1);
+    const playerIndex = match.players
+      .map((player) => {
+        return player.uid;
+      })
+      .indexOf(socket.data.user_id);
+    match.players.splice(playerIndex, 1);
 
     io.to(matchID).emit(PLAYER_LEFT_EVENT, socket.data.user_id, match.players);
 
