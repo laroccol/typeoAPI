@@ -12,7 +12,7 @@ const server = createHTTPServer(app);
 
 const io = createSocketIOServer(server);
 
-server.listen(8080, () => {
+server.listen(process.env.PORT, () => {
   console.log("Listening on port 8080");
 });
 // const indexRouter = require("./routes/index");
