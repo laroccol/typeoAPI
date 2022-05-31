@@ -26,13 +26,9 @@ app.use((err: any, req: any, res: any, next: any) => {
   res.status(err.status || 500).send(err.text || "Something went wrong");
 });
 
-console.log(__dirname);
-console.log(__dirname.lastIndexOf("/"));
-console.log(__dirname.substring(0, __dirname.lastIndexOf("/")));
-console.log(path.join(__dirname, "/build"));
+console.log(path.join(__dirname, "..", "build", "index.html"));
+app.use(express.static(path.join(__dirname, "..", "/build")));
 
-app.use(
-  express.static(
-    path.join(__dirname.substring(0, __dirname.lastIndexOf("/")), "/build")
-  )
-);
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "..", "build", "index.html"));
+});
