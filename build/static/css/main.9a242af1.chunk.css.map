@@ -1,1 +1,0 @@
-{"version":3,"sources":["webpack://src/components/game/styles.css"],"names":[],"mappings":"AAAA,KACE,+BACF,CAEA,OACE,qBACF,CAEA,SACE,UACF","file":"main.9a242af1.chunk.css","sourcesContent":["body {\r\n  background-color: white !important;\r\n}\r\n\r\n#space {\r\n  background-color: white;\r\n}\r\n\r\n.correct {\r\n  color: white;\r\n}\r\n"]}

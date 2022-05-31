@@ -4,7 +4,7 @@ if (process.env.NODE_ENV !== "production") {
   });
 }
 
-import { app } from "./config/app";
+import { app } from "./app";
 import { createHTTPServer } from "./config/http";
 import { createSocketIOServer } from "./config/io";
 
@@ -12,7 +12,7 @@ const server = createHTTPServer(app);
 
 const io = createSocketIOServer(server);
 
-server.listen(process.env.PORT, () => {
+server.listen(process.env.PORT || 8080, () => {
   console.log("Listening on port 8080");
 });
 // const indexRouter = require("./routes/index");
