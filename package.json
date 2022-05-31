@@ -6,8 +6,8 @@
   "scripts": {
     "tsc": "tsc",
     "start": "node dist/index.js",
-    "heroku-postbuild": "npm run tsc",
-    "dev": "ts-node-dev src/index.ts"
+    "heroku-postbuild": "cd ../client && npm install && npm run build && cd ../api npm run tsc",
+    "dev": "cd ../client && npm run build && cd ../api && ts-node-dev src/index.ts"
   },
   "dependencies": {
     "body-parser": "^1.18.3",
