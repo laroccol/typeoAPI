@@ -20,8 +20,19 @@ getLeaderboards().then(({ daily, allTime }) => {
 let initialCountdown = true;
 
 function timeTolocalMidnight() {
-  return new Date().setHours(24, 0, 0, 0) - new Date().getTime();
+  const date = new Date();
+  const easternDate = new Date(
+    date.toLocaleString("en-US", {
+      timeZone: "America/New_York",
+    })
+  );
+  return (
+    new Date(easternDate).setHours(24, 0, 0, 0) -
+    new Date(easternDate).getTime()
+  );
 }
+
+console.log(timeTolocalMidnight() / 1000 / 60 / 60);
 
 setInterval(
   () => {
