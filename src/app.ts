@@ -1,6 +1,7 @@
 import express from "express";
 import raceRouter from "./routes/race";
 import statsRouter from "./routes/stats";
+import leaderboardRouter from "./routes/leaderboard";
 import userRouter from "./routes/users";
 import cors from "cors";
 import cookieParser from "cookie-parser";
@@ -21,6 +22,7 @@ app.use(cookieParser());
 app.use(express.json());
 app.use("/race", raceRouter);
 app.use("/stats", statsRouter);
+app.use("/leaderboard", leaderboardRouter);
 app.use("/user", verifyIDToken, userRouter);
 app.use((err: any, req: any, res: any, next: any) => {
   res.status(err.status || 500).send(err.text || "Something went wrong");

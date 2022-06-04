@@ -7,6 +7,11 @@ import { db } from "../config/firestore";
 import { doc } from "prettier";
 import { saveRaceStats } from "../db/race";
 import { verifyIDToken } from "../auth/authenticateToken";
+import {
+  all_time_leaderboard,
+  checkLeaderboard,
+  daily_leaderboard,
+} from "./leaderboard";
 const router = express.Router();
 
 /* GET users listing. */
@@ -43,13 +48,28 @@ router.get("/passage", (req, res) => {
 });
 
 router.post("/statreport", verifyIDToken, async (req: any, res, next) => {
-  const { uid } = req["current-user"];
+  const { uid, displayName } = req["current-user"];
 
   const resultsData: ResultsData = req.body.resultsData;
   const characterData: Array<CharacterData> = req.body.characterData;
   const wpm = resultsData.dataPoints[resultsData.dataPoints.length - 1].wpm;
   const accuracy = resultsData.accuracy;
   const testType = resultsData.testType;
+
+  if (testType.name === "Timed" && testType.amount === 30) {
+    checkLeaderboard(daily_leaderboard, "daily_leaderboard", {
+      id: uid,
+      name: displayName,
+      accuracy,
+      wpm,
+    });
+    checkLeaderboard(all_time_leaderboard, "all_time_leaderboard", {
+      id: uid,
+      name: displayName,
+      accuracy,
+      wpm,
+    });
+  }
 
   const passage = resultsData.passage;
 
