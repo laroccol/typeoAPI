@@ -16,4 +16,5 @@ export interface ResultsData {
   accuracy: number;
   characters: { correct: number; incorrect: number };
   testType: { name: string; amount?: number };
+  characterDataPoints: CharacterData[];
 }

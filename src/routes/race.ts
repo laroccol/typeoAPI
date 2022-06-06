@@ -51,7 +51,7 @@ router.post("/statreport", verifyIDToken, async (req: any, res, next) => {
   const { uid, displayName } = req["current-user"];
 
   const resultsData: ResultsData = req.body.resultsData;
-  const characterData: Array<CharacterData> = req.body.characterData;
+  const characterData: Array<CharacterData> = resultsData.characterDataPoints;
   const wpm = resultsData.dataPoints[resultsData.dataPoints.length - 1].wpm;
   const accuracy = resultsData.accuracy;
   const testType = resultsData.testType;
