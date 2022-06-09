@@ -51,7 +51,8 @@ router.post("/statreport", verifyIDToken, async (req: any, res, next) => {
   const { uid, displayName } = req["current-user"];
 
   const resultsData: ResultsData = req.body.resultsData;
-  const characterData: Array<CharacterData> = resultsData.characterDataPoints;
+  const characterDataPoints: Array<CharacterData> =
+    resultsData.characterDataPoints;
   const wpm = resultsData.dataPoints[resultsData.dataPoints.length - 1].wpm;
   const accuracy = resultsData.accuracy;
   const testType = resultsData.testType;
@@ -73,27 +74,14 @@ router.post("/statreport", verifyIDToken, async (req: any, res, next) => {
 
   const passage = resultsData.passage;
 
-  const characterMap = new Map<string, number>();
-  let mostMissedCharacter = "None";
-  let maxCount = 0;
-  let compoundError = false;
-  for (const element of characterData) {
-    if (!element.isCorrect && !compoundError) {
-      const character = passage[element.charIndex - 1];
-      const newCharacterCount = (characterMap.get(character) || 0) + 1;
-      characterMap.set(character, newCharacterCount);
-
-      if (newCharacterCount > maxCount) {
-        mostMissedCharacter = character;
-        maxCount = newCharacterCount;
-      }
-    } else if (element.isCorrect && compoundError) {
-      compoundError = false;
-    }
-  }
-
   try {
-    await saveRaceStats(uid, { wpm, accuracy, mostMissedCharacter, testType });
+    await saveRaceStats(uid, {
+      passage,
+      wpm,
+      accuracy,
+      characterDataPoints,
+      testType,
+    });
   } catch (err) {
     const error: R_ERROR = {
       status: 500,

@@ -37,7 +37,6 @@ export const addToLeaderboard = (
   leaderboard: string,
   { id, name, accuracy, wpm }: Leaderboard
 ) => {
-  console.log(leaderboard, id);
   db.collection(leaderboard).doc(id).set({ name, accuracy, wpm });
 };
 

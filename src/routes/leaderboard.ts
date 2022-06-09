@@ -69,7 +69,6 @@ export const checkLeaderboard = (
       addToLeaderboard(leaderboardName, { id, name, accuracy, wpm });
     }
   }
-  console.log(leaderboardName, leaderboard);
 };
 
 router.get(`/get-leaderboard`, async (req: any, res, next) => {

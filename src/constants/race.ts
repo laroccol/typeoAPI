@@ -1,5 +1,6 @@
 export interface CharacterData {
   charIndex: number;
+  character: string;
   isCorrect: boolean;
   timestamp: number;
   multiCharacterDelete?: number;
