@@ -1,8 +1,3 @@
-export const SettingTypes = {
-  TEXT_TYPE: 0,
-  GAME_INFO: 1,
-};
-
 export const GameTypes = {
   NONE: 0,
   TIMED: 1,
@@ -17,5 +12,5 @@ export const TextTypes = {
 
 export const DefaultGameSettings = {
   textType: TextTypes.PASSAGE,
-  gameInfo: { type: GameTypes.NONE },
+  gameInfo: { type: GameTypes.TIMED, amount: 30 },
 };
